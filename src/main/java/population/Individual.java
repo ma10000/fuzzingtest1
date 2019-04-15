@@ -2,13 +2,37 @@ package population;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import creategene.StringChangeGene;
 
 public class Individual {
+	//单字符特征字符串
+	public static String[] singlechars = { ".*[hH].*", ".*[xX].*", ".*[mM].*", ".*[sS].*", ".*[lL].*", ".*[cC].*", ".*[tT].*", ".*[iI].*", ".*[nN].*", ".*[rR].*", ".*[dD].*", ".*[oO].*", ".*[uU].*", ".*[pP].*", ".*[bB].*", ".*[aA].*", ".*[wW].*",
+			".*_.*", ".* .*", ".*\\(.*"};
+	//双字符特征字符串
+	public static String[] doublechars = { ".*[sS][eE].*", ".*[iI][nN].*", ".*[dD][eE].*", ".*[cC][oO].*", ".*[dD][rR].*", ".*[uU][pP].*", ".*[tT][rR].*",
+			".*[aA][sS].*", ".*[mM][iI].*", ".*[cC][hH].*", ".*[xX][pP].*", ".*[eE][xX].*", ".*[mM][aA].*", ".*[nN][eE].*",
+			".*[aA][nN].*", ".*[oO][rR].*", ".*[wW][hH].*"};
+	//单字节不是特征字符
+	public static String[] nosuchchars = {"!", "\"","#", "$", "%", "&", "'",")", "*", "+", ",", "-",".", "/", "0",
+			"1", "2", "3", "4", "5", "6", "7", "8", "9",":",";", "<", "=", ">", "?", "@", "E", "F", "G", "J",
+			"K", "Q", "V", "Y", "Z","[","\\","]", "^", "`", "e", "f", "g", "j", "k", "q", "v", "y", "z", "{", "|","}", "~"};
+
 	private String gene;//基因序列
 	private double score;//对应的函数得分
 	private ArrayList<String> route;//该测试用例所经历的路径
+
+	public double getFitness() {
+		return fitness;
+	}
+
+	public void setFitness(double fitness) {
+		this.fitness = fitness;
+	}
+
+	private double fitness;//适应度函数值
 	public String getGene() {
 		return gene;
 	}
@@ -84,7 +108,60 @@ public class Individual {
 		for(int s = 0;s<d;s++) {
 			sb.insert(0,'0');
 		}
-		return sb.toString();
+		String result = StringChangeGene.geneChangeGraycode(sb.toString());
+		return result;
+	}
+
+	public void calculateFitness(){
+		double result = 0;
+		if(score ==0){
+			result = 0;
+		}else if(score==1.0){
+			int n1 = 0;
+			int m = 0;
+			String agene = StringChangeGene.graycodeChangeGene(gene);
+			String charstr = StringChangeGene.geneChangeString(agene);
+			for(int j=0;j<singlechars.length;j++) {
+				Pattern pattern = Pattern.compile(singlechars[j]);
+				Matcher matcher = pattern.matcher(charstr);
+				if (matcher.matches()) {
+					n1++;
+				}
+			}
+			for(int i=0;i<nosuchchars.length;i++){
+				if(charstr.contains(nosuchchars[i])){
+					m++;
+				}
+			}
+            result = n1/m + score;
+		}else if(score==2){
+			int n1 = 0;
+			int n2 = 0;
+			int m = 0;
+			String agene = StringChangeGene.graycodeChangeGene(gene);
+			String charstr = StringChangeGene.geneChangeString(agene);
+			for(int j=0;j<singlechars.length;j++) {
+				Pattern pattern = Pattern.compile(singlechars[j]);
+				Matcher matcher = pattern.matcher(charstr);
+				if (matcher.matches()) {
+					n1++;
+				}
+			}
+			for(int j=0;j<doublechars.length;j++) {
+				Pattern pattern = Pattern.compile(doublechars[j]);
+				Matcher matcher = pattern.matcher(charstr);
+				if (matcher.matches()) {
+					n2++;
+				}
+			}
+			for(int i=0;i<nosuchchars.length;i++){
+				if(charstr.contains(nosuchchars[i])){
+					m++;
+				}
+			}
+			result = (n1+n2*2)/m + score;
+		}
+		fitness = result;
 	}
 	@Override
 	public String toString() {

@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 import createfuzzing.GenerateFuzzing;
 import creategene.StringChangeGene;
@@ -8,16 +10,23 @@ import execute.ExecuteFuzzing;
 import execute.Executecmd;
 import geneticachieve.GeneticAchieve;
 import geneticoperate.geneticKid;
+import org.apache.log4j.Logger;
 import population.Individual;
 
 public class Main {
-	public static void main(String[] args) {
-		
-		
 
-		
-		ExecuteFuzzing ef = new ExecuteFuzzing();
-		ef.executeFuzzing();
+
+
+	public static void main(String[] args) {
+
+		 String[] singlechars = { ".*[hH].*", ".*[xX].*", ".*[mM].*", ".*[sS].*", ".*[lL].*", ".*[cC].*", ".*[tT].*", ".*[iI].*", ".*[nN].*", ".*[rR].*", ".*[dD].*", ".*[oO].*", ".*[uU].*", ".*[pP].*", ".*[bB].*", ".*[aA].*", ".*[wW].*",
+				".*_.*", ".* .*", ".*\\(.*"};
+
+		String[] nosuchchars = {"!", "\"","#", "$", "%", "&", "'",")", "*", "+", ",", "-",".", "/", "0",
+		"1", "2", "3", "4", "5", "6", "7", "8", "9",":",";", "<", "=", ">", "?", "@", "E", "F", "G", "J",
+				"K", "Q", "V", "Y", "Z","[","\\","]", "^", "`", "e", "f", "g", "j", "k", "q", "v", "y", "z", "{", "|","}", "~"};
+//		ExecuteFuzzing ef = new ExecuteFuzzing();
+//		ef.executeFuzzing();
 	//	GeneticAchieve ga = new GeneticAchieve();
 //		ga.startIteration();
 //		for(int m=1;m<257;m++) {
@@ -30,18 +39,26 @@ public class Main {
 //		}
 //		String tem = "a";
 //		for(int m=1;m<250;m++) {
-//			
-//			String ch = "c";
-//			System.out.println("m:"+m+" "+tem);
-//			String[] list = ExecuteFuzzing.execute(tem);
-//			for(int i=0;i<list.length;i++) {
-//				System.out.println(list[i]);
+//
+//		ArrayList<String> temp = new ArrayList<String>();
+//		 for(int i=32;i<127;i++){
+//		 	boolean flag = true;
+//		 	for(int m=0;m<singlechars.length;m++) {
+//				if (String.valueOf((char) i).matches(singlechars[m])){
+//					flag = false;
+//				}
 //			}
-//			StringBuffer sb = new StringBuffer(tem);
-//			sb.insert(0,ch);
-//			tem = sb.toString();
-//		}
-		
+//		 	if(flag){
+//		 		temp.add(String.valueOf((char) i));
+//			}
+//		 }
+//		System.out.println(singlechars.length);
+//		 for(int i=0;i<temp.size();i++){
+//			 System.out.println(temp.get(i));
+//
+
+
+
 		
 
 	}
